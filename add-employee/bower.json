@@ -1,0 +1,19 @@
+{
+  "name": "add-employee",
+  "main": "add-employee.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-form": "https://github.com/PolymerElements/iron-form.git#2.1.1",
+    "paper-input": "https://github.com/PolymerElements/paper-input.git#2.1.1",
+    "paper-button": "https://github.com/PolymerElements/paper-button.git#2.1.1",
+    "iron-icons": "https://github.com/PolymerElements/iron-icons.git#2.1.1"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

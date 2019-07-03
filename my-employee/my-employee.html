@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../add-employee/add-employee.html">
+
+<dom-module id="my-employee">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <iron-ajax id="senData" url="http://localhost:3000/employees" content-type="application/json" method="post"
+      handle-as="json" body="[[data]]">
+    </iron-ajax>
+
+    <add-employee on-save-employee="saveData"></add-employee>
+  </template>
+
+  <script>
+    class MyEmployee extends Polymer.Element {
+      static get is() { return 'my-employee'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'my-employee'
+          },
+          data: {
+            type: Object
+          }
+        };
+      }
+
+      saveData(e) {
+        this.data = e.detail;
+        this.$.senData.generateRequest();
+      }
+    }
+
+    window.customElements.define(MyEmployee.is, MyEmployee);
+  </script>
+</dom-module>

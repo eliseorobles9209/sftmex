@@ -1,0 +1,177 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<dom-module id="add-employee">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .tableContent {
+        position: absolute;
+        margin-top: 13em;
+        margin-bottom: 4em;
+        width: 100px;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+
+      paper-button.green {
+        background-color: var(--paper-green-500);
+        color: white;
+      }
+
+      paper-button.custom:hover {
+        background-color: var(--paper-indigo-100);
+      }
+
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        }
+
+        ;
+      }
+
+      paper-button.disabled {
+        color: white;
+        background-color: red;
+      }
+    </style>
+
+    <iron-ajax id="1" auto url="http://localhost:3000/employees" content-type="application/json"
+      last-response="{{data}}" method="GET" handle-as="json">
+    </iron-ajax>
+    <iron-ajax id="deleteEmployee" auto  content-type="application/json"
+    method="DELETE" handle-as="json">
+   </iron-ajax>
+
+    <iron-form id="myForm">
+      <form id="formEmployee" action="/foo" method="post">
+        <paper-input name="firstName" label="first name" value="{{firstName}}"></paper-input>
+        <paper-input name="lastName" label="last name" value="{{lastName}}"></paper-input>
+        <paper-input name="email" label="email" value="{{email}}"></paper-input>
+        <br><br>
+        <paper-button toggles raised class="custom green" on-tap="_submit">submit</paper-button>
+      </form>
+    </iron-form>
+    <br><br>
+
+    <div class="tableContent">
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Firts Name</th>
+          <th>Last Name</th>
+          <th>email</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        <template is="dom-repeat" items="[[data]]">
+          <tr>
+            <td>[[item.id]]</td>
+            <td>[[item.first_name]]</td>
+            <td>[[item.last_name]]</td>
+            <td>[[item.email]]</td>
+            <td>
+              <paper-button raised class="custom indigo" on-tap="_edit">
+                <iron-icon icon="create"></iron-icon>
+              </paper-button>
+            </td>
+            <td>
+              <paper-button toggles raised class="custom disabled" on-tap="_delete">
+                <iron-icon icon="delete"></iron-icon>
+              </paper-button>
+            </td>
+          </tr>
+      </table>
+    </div>
+  </template>
+
+
+  <script>
+    class AddEmployee extends Polymer.Element {
+      static get is() { return 'add-employee'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'add-employee'
+          },
+          data: {
+            type: Object
+          },
+          id: {
+            type: Number,
+            value: ''
+          },
+          firstName: {
+            type: String,
+            value: ''
+          },
+          lastName: {
+            type: String,
+            value: ''
+          },
+          email: {
+            type: String,
+            value: ''
+          },
+        };
+      }
+
+      _submit() {
+        let dataBody = {
+          "id": this.id,
+          "first_name": this.firstName,
+          "last_name": this.lastName,
+          "email": this.email
+        };
+        this.dispatchEvent(new CustomEvent('save-employee', {
+          bubbles: true,
+          composed: true,
+          detail: dataBody
+        }));
+      }
+      _delete(e) {
+        alert("Delete");
+        let dataBody = {
+          "id": this.id,
+          "first_name": this.firstName,
+          "last_name": this.lastName,
+          "email": this.email
+        };
+        this.$.deleteEmployee.body = dataBody;
+        this.$.deleteEmployee.url = "http://localhost:3000/employees/"+e.model.item.id;
+        this.$.deleteEmployee.generateRequest();
+      }
+
+    }
+
+    window.customElements.define(AddEmployee.is, AddEmployee);
+  </script>
+</dom-module>
