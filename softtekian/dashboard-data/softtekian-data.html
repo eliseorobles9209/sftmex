@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-input/iron-input.html">
+
+<dom-module id="softtekian-data">
+    <template>
+        <style>
+            :host {
+                display: block;
+                background: chartreuse;
+            }
+        </style>
+        <h2>SOFTTEKIAN DATA</h2>
+    </template>
+
+    <script>
+        class SofttekianData extends Polymer.Element {
+            static get is() { return 'softtekian-data'; }
+            static get properties() {
+                return {
+                    nombre: {
+                        type: String,
+                        value: '',
+                        readOnly: false
+                    },
+                    is: {
+                        type: String,
+                        value: '',
+                        readOnly: false
+                    },
+                    email: {
+                        type: String,
+                        value: '',
+                        readOnly: false
+                    },
+                    hobbie: {
+                        type: String,
+                        value: 'Dormir',
+                        readOnly: false
+                    }
+                };
+            }
+            ready() {
+                super.ready();
+                this._testAltaSofttekian();
+            }
+            _testAltaSofttekian() {
+                let s = new SofttekianDM("test", "MINO", "mimoso@softtek.com", "loco");
+
+                //Lanzar un event softtekian-add-eent
+                //crear el objeto de datos
+                let obj = {
+                    detail: {
+                        newsofttekian: s,
+                        warnings: 2
+                    },
+                    bubbles: true,
+                    composed: true,
+                }
+                let ce = new CustomEvent("softtekian-add-event", obj)
+                //lanzarlo
+                this.dispatchEvent(ce)
+            }
+        }
+
+        window.customElements.define(SofttekianData.is, SofttekianData);
+    </script>
+</dom-module>

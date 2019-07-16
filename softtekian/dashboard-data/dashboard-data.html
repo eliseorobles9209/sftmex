@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./softtekian-data.html">
+<script src="./SofttekianDM.js" charset="utf-8"></script>
+<dom-module id="dashboard-data">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Dashboard de Datos de Softtekians</h2>
+    <h3>[[stkarray]]</h3>
+    <softtekian-data id="forma"></softtekian-data>
+
+  </template>
+
+  <script>
+    class DashboardData extends Polymer.Element {
+      static get is() { return 'dashboard-data'; }
+      static get properties() {
+        return {
+          stkarray: {
+            type: Array,
+            value: [],
+            readOnly: false,
+            notify: false,
+            reflectToAttribute: false
+          }
+        };
+      }
+      constructor() {
+        super();
+        console.log("Dashboard creado");
+      }
+
+      ready() {
+        super.ready();
+        // this._testArreglo();
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        //agregamos el listener
+        //imprimir en log los datos que llegan
+        this.$.forma.addEventListener("softtekian-add-event", e => console.log(e)
+        );
+      }
+
+      _testArreglo() {
+        let s = new SofttekianDM('Eliseo', 'ELBR', 'eliseo.bonifacio@softtek.com');
+        s.printInfo();
+
+        //formas de agragar el objeto s al arreglo
+        this.stkarray.push(s);
+
+        let s2 = new SofttekianDM('Hernesto', 'HEBR', 'hernesto.bonifacio@softtek.com');
+        this.stkarray.unshift(s2);
+
+        let s3 = new SofttekianDM('Hernesto', 'HEBR', 'hernesto.bonifacio@softtek.com');
+        this.stkarray.splice(0, 0, s3);
+
+        let s4 = new SofttekianDM('Hernesto', 'HEBR', 'hernesto.bonifacio@softtek.com');
+        this.stkarray[this.stkarray.length] = s3;
+
+        let s5 = new SofttekianDM('Hernesto', 'HEBR', 'hernesto.bonifacio@softtek.com');
+        this.push('stkarray', s5);
+
+        console.log(this.stkarray);
+      }
+    }
+
+    window.customElements.define(DashboardData.is, DashboardData);
+  </script>
+</dom-module>
